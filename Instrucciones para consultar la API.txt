@@ -1,0 +1,31 @@
+1. Para poder consultar la api es necesario darse de alta en deta
+	Deta Space
+	https://deta.space
+
+2. Una vez creada la cuenta en deta, accede a esta dirección en el navegador:
+
+	https://deta.space/discovery/r/grbiur85uqr1uw5s
+
+3. En la pantalla a la que lleva la dirección da en descargar proyecto.
+
+4. En tu deta.space, en la sección de canvas, aparecerá un app con nombre j_olea_pi01_api
+	Da click en ella 
+
+5. En la pantalla a la que te llevará verás {"detail":"Not Found"}, no te preocupes. 
+	
+6. En la barra de dirección, de dicha pantalla, verás algo similar a esto: 
+
+	https://j_olea_pi01_api-2-j5560115.deta.app
+
+	tan sólo añade al final, después de deta.app: /docs
+	
+7. En mi caso sería: https://j_olea_pi01_api-2-j5560115.deta.app/docs
+	Da enter. 
+
+8. En la nueva pantalla encontrarás cuatro funciones de consulta.
+
+9. Despliga la función que quieras revisar y da click en el botón "Try it out" localizado en la parte superior derecha.  
+
+10. La información que regresa la función aparecerá más abajo. 
+
+11. Listo, puedes consultar la cantidad de películas por plataforma, los actores que más aparecen, el número de películas para determino rating, etc. 

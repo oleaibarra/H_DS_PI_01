@@ -1,0 +1,244 @@
+I) Para hacer el deployment en deta space (aunque se supone que soporta hasta python 3.9), tuve que crear un ambiente virtual con python 3.7
+	Si ya cuentas con un ambiente virtual con python 3.7 o sabes cómo hacerlo, salta los pasos II y III y sólo asegúrate de descargar en tu ambiente fastapi y uvicorn
+
+
+A continuación se explica cómo crear un ambiente virtual con anaconda (sí, hay que descargar anaconda). 
+
+
+II) Puedes instalar Anaconda en Windows siguiendo los siguientes pasos:
+
+1. Descarga la última versión de Anaconda desde la página oficial de Anaconda: https://www.anaconda.com/products/individual
+
+2. Haz doble clic en el archivo de instalación descargado para iniciar el instalador.
+
+3. Sigue las instrucciones del instalador para completar la instalación. Puedes aceptar las opciones predeterminadas o personalizar la instalación según tus necesidades.
+
+4. Una vez que la instalación haya finalizado, podrás abrir Anaconda Navigator desde el menú de inicio de Windows.
+
+5. Desde Anaconda Navigator, podrás crear y administrar entornos de Python, instalar paquetes y aplicaciones, y lanzar aplicaciones como Jupyter Notebook.
+
+
+III) Puedes crear un ambiente virtual para seguir este proyecto siguiendo los siguientes pasos:
+
+1. Abre la terminal o el símbolo del sistema (Anaconda Prompt en Windows).
+
+2. Crea un nuevo ambiente virtual con Python 3.7 utilizando el comando conda create:
+
+	conda create -n nombre_que_quieras_para_el_ambiente python=3.7
+	por ejemplo: 
+	conda create -n projecto_fastapi python=3.7
+
+3. Activa el nuevo ambiente virtual: 
+
+	conda activate nombre_del_ambiente
+	por ejemplo: 
+	conda activate projecto_fastapi
+
+4. Si hiciste las cosas bien, verás el nombre de tu proyecto entre parentesis al inicio de la línea de comando: 
+
+	(projecto_fastapi) C:\Users\Usuario>
+
+5. Ahora que tienes tu ambiente virtual activado, puedes instalar Pandas, FastAPI y Uvicorn utilizando conda o pip.
+
+	usando conda: conda install pandas fastapi uvicorn
+	usando pip: pip install pandas fastapi uvicorn (en caso de no haberse descargado el pip installer por default con la instalación de anconda corre primero: conda install pip
+
+
+IV) Correr FastAPI de manera local con uvicorn: 
+
+1. Crea una carpeta para tu proyecto y asegúrate de que contenga un archivo con nombre "main.py" y un archivo "requirements.txt"
+	(en mi caso en la carpeta también esta un archivo "mis_funciones.py" y el archivo csv con el que trabajé)
+
+2. Archivos:
+	a. el archivo "requirements.txt" debe de tener los paquetes necesarios para tu proyecto. 
+	   En mi caso sólo utilicé (no hace falta incluir python en el archivo): 
+
+	   FastAPI
+	   pandas
+
+           Nota: los escribi tal cual los muestro. No indiqué ninguna versión en específico. 
+	
+	b. el archivo "main.py" debe descargar las librerías necesarias para el proyecto, en mi caso:
+
+		from fastapi import FastAPI
+		import pandas as pd
+		from mis_funciones import get_max_duration
+		from mis_funciones import get_score_count
+		from mis_funciones import get_count_platform
+		from mis_funciones import get_actor
+
+	para más detalles consultar el archivo main.py en el repositorio. 
+
+3. Consultas de manera local: 
+	a. Abre tu archivo main.py en el editor de tu preferencia. Yo utilicé visual studio code. 
+
+	b. En la terminal de anaconda (o en cmd si creaste tu ambiente virtual con python) desplázate hasta la carpeta de tu proyecto 
+          (en mi caso la carpeta se llama Deta):
+
+	  (myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>
+
+	  y escribe: 
+	  uvicorn main:app --reload
+
+          luciría así: 
+	  (myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta> uvicorn main:app --reload
+
+	c. En http://127.0.0.1:8000/docs podrás consultar tu código, en mi caso mis funciones. 
+	   cada vez que hagas un cambio en tu archivo main.py, revisa en la terminal que uvicorn ya lo haya actualizado antes de volver al navegador. 
+	   
+	d. Si todo está corriendo bien, es hora de hacer el deployment en deta space.
+	   teclea ctrl + c para salir de uvicorn. 
+	   deberías de estar en tu carpeta: (myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>
+
+V) Deployment en deta space: 
+
+1. Ve a Deta Space (https://deta.space) y crea una cuenta si no la tienes. 
+
+2. Una vez con tu cuenta, ingresa a ella y ve a tu "canvas". 
+
+3. En la parte inferior verás un recuadro para escribir: escribe "general". Aun no terminas de escribir "general" y ya te presenta opciones. Una de ellas es "settings"
+
+4. Da doble click en "settings" y selecciona la opción para generar un token (una contraseña). 
+
+5. Copia la contraseña y guárdala en algún sitio seguro (no te la volverá a mostrar deta space). 
+
+6. Ahora abre una terminal de powershell:
+	En mi caso lo hice con visual studio code: 
+
+	Con mi archivo main.py abierto desplegué la terminal (en la parte superior derecha, el cuadrado con la parte inferior pintada de negro). 
+	Si la terminal no carga tu ambiente virtual, ejecuta kill terminal, y asegurate de tener el kernel seleccionado
+	de tu ambiente virtual y vuelve a abrir la terminal powershell.
+
+	Esto debería desplegar tu terminal powershell en automático: PS C:\Users\Usuario\Desktop\MLOpsReviews> conda activate myenv
+
+	Nota: Desplegará tu ruta y el nombre de tu ambiente virtual (obviamente), el ejemplo es de mi proyecto. 
+
+7. Una vez en la terminal powershell (que debe haber cargado automáticamente tu ambiente virtual) escribe: 
+
+	iwr https://get.deta.dev/space-cli.ps1 -useb | iex
+
+	En mi caso: PS C:\Users\Usuario\Desktop\MLOpsReviews> iwr https://get.deta.dev/space-cli.ps1 -useb | iex
+
+	Tomará algunos 15 segundos aproximadamente y después desplegará algo parecido a esto: 
+ 
+	Space was installed successfully to C:\Users\Usuario\.detaspace\bin\space.exe
+	Run 'space --help' to get started
+	PS C:\Users\Usuario\Desktop\MLOpsReviews> 
+
+8. Regresa a la terminal de conda (donde estás posicionado en tu carpeta del proyecto): 
+	(myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>
+	escribe: space login
+
+	en mi caso: 
+	(myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>space login
+
+	desplegará algo similar a esto: 
+
+	To authenticate the Space CLI with your Space account, generate a new access token in your Space settings and paste it below:
+
+	? Enter access token (41 chars) >
+
+9. Pega el token que generaste en deta space y que debiste haber guardado: 
+
+	? Enter access token (41 chars) > *****************************************
+
+	Deberás ver algo similiar a esto: 
+
+	👍 Login Successful!
+
+	(myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>
+
+10. Crea un proyecto deta space: 
+	escribe space new: 
+	(myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>space new
+
+11. Dale nombre a tu proyecto: 
+	después de escribir space new te preguntará por el nombre que deseas darle a tu proyecto: 
+
+	? What is your project's name? > 
+	en mi caso: ? What is your project's name? > j_olea_pi01_api
+
+12. Después de darle nombre a tu proyecto (no puede tener más de 16 caracteres el nombre) verás algo como esto: 
+
+	~ No Spacefile found, trying to auto-detect configuration ...
+ 	Space detected the following configuration:
+
+	Micro found in "./"
+	L engine: python3.9
+
+	? Do you want to bootstrap j_olea_pi01_api with this configuration? y
+
+13. Dale ENTER o escribe y, verás lo siguiente: 
+
+	~ Bootstrapping j_olea_pi01_api ...
+	✓ Project j_olea_pi01_api created successfully!
+
+	Next steps:
+
+ 	Find your project in Builder: https://deta.space/builder/b0ZVHSR8hPQA
+ 	Use the Spacefile to configure your app: https://go.deta.dev/docs/spacefile/v0
+ 	Push your code to Space with space push
+ 	Launch your app to the world with space release
+
+14. Escribe space push: 
+	(myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>space push
+
+	verás lo siguiente: 
+
+	Validating Spacefile...
+
+	i No app icon specified
+	✓ Micro "Deta"
+
+	Your Spacefile looks good, proceeding with your push!!
+
+	✓ Successfully started your build!
+	✓ Successfully pushed your Spacefile!
+
+	~ Pushing your code & running build process...
+
+15. Espera a que deta cargue los paquetes necesarios. 
+	cuando termine el proceso algo como esto: 
+
+	✓ Successfully pushed your code and updated your Builder instance!
+	Run space release to create a release that others can install.
+
+	Builder instance: https://j_olea_pi01_api-1-j5560115.deta.app
+
+16. Escribe space release: 
+	(myenv) C:\Users\Usuario\Desktop\MLOpsReviews\Deta>space release
+
+	verás lo siguiente: 
+	? Do you want to use the latest revision (termite-78fm)? (y/n) y
+
+	dale Enter (sin miedo)
+
+	verás lo siguiente: 
+	~ Creating a Release with the latest Revision ...
+
+	creating release...
+	publishing release in edge locations..
+	completed...
+	released: j_olea_pi01_api-exp-dckS
+	https://deta.space/discovery/r/grbiur85uqr1uw5s
+
+ 	Lift off -- successfully created a new Release!
+ 	Your Release is available globally on 5 Deta Edges
+ 	Anyone can install their own copy of your app.
+	
+17. La direccion https es la que compartes para que puedan desgargar tu proyecto: 
+	en mi caso: https://deta.space/discovery/r/grbiur85uqr1uw5s
+
+18. Si la persona no tiene cuenta deta space, le pedirá que generé una. 
+	si cuenta con cuenta deta space, el link lo llevará a una pantalla donde podrá descargar tu proyecto. 
+
+19. Después, dentro de tu deta space personal, o de la persona que lo haya descargado, sólo hay que dar click al proyecto que habrá aparecido en el "canvas" de la cuenta de deta. 
+
+20. Al dar click en el proyecto te llevará al proyecto que generaste con fastAPI. Escribe /docs al final de dirección en la barra del buscador y verás tus funciones. 
+
+
+
+
+
+
+

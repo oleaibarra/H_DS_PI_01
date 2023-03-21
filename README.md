@@ -4,4 +4,4 @@ El deployment de fastAPI fue através de Deta space y se pude descargar (una vez
 https://deta.space/discovery/r/grbiur85uqr1uw5s
 
 El sistema de recomendación se puede consultar en el repositorio: 
-H_DS_PI_
+H_DS_PI_02
